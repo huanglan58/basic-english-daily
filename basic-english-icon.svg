@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="92" fill="#203548"/>
+  <path d="M112 129h288v254H112z" fill="#f7fafc"/>
+  <path d="M143 167h102v40H143zm0 72h226v26H143zm0 47h194v26H143zm0 47h154v26H143z" fill="#2459a6"/>
+  <path d="M292 164h75v75h-75z" fill="#1d7a5f"/>
+  <text x="256" y="438" fill="#f7fafc" font-family="Arial, Helvetica, sans-serif" font-size="68" font-weight="800" text-anchor="middle">BE</text>
+</svg>
