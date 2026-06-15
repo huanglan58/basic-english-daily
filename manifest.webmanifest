@@ -1,0 +1,18 @@
+{
+  "name": "C.K. Ogden Basic English Daily",
+  "short_name": "Basic English",
+  "description": "每天学习一点 Basic English：词卡、发音、跟读、测验和应用训练。",
+  "start_url": "./basic-english-daily.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eef3f6",
+  "theme_color": "#203548",
+  "icons": [
+    {
+      "src": "./basic-english-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
