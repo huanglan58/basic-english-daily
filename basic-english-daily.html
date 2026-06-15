@@ -1,0 +1,1070 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#203548" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Basic English" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./basic-english-icon.svg" />
+  <title>C.K. Ogden Basic English Daily</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #18212f;
+      --muted: #667085;
+      --line: #d9e0e8;
+      --paper: #fbfcfe;
+      --panel: #ffffff;
+      --green: #1d7a5f;
+      --green-soft: #e7f5ef;
+      --blue: #2459a6;
+      --blue-soft: #eaf1fb;
+      --yellow: #b67912;
+      --yellow-soft: #fff3d9;
+      --red: #bb3636;
+      --shadow: 0 16px 38px rgba(22, 31, 49, 0.11);
+      --radius: 8px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #eef3f6;
+      color: var(--ink);
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      border-radius: var(--radius);
+      min-height: 40px;
+      padding: 0 12px;
+      cursor: pointer;
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+    }
+
+    button:hover {
+      border-color: #9caec4;
+      transform: translateY(-1px);
+    }
+
+    button:active { transform: translateY(0); }
+    button.primary { background: var(--green); color: #fff; border-color: var(--green); }
+    button.blue { background: var(--blue); color: #fff; border-color: var(--blue); }
+    button.warn { background: var(--yellow-soft); border-color: #efc36e; color: #593d05; }
+    button.icon { width: 40px; padding: 0; display: inline-grid; place-items: center; }
+    button:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+    .app {
+      display: grid;
+      grid-template-columns: 290px minmax(0, 1fr) 330px;
+      min-height: 100vh;
+    }
+
+    aside, main {
+      padding: 24px;
+    }
+
+    aside {
+      border-right: 1px solid var(--line);
+      background: rgba(255,255,255,.76);
+    }
+
+    .right {
+      border-left: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: #203548;
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: 20px; line-height: 1.15; margin-bottom: 2px; }
+    h2 { font-size: 18px; margin-bottom: 14px; }
+    h3 { font-size: 15px; margin-bottom: 10px; }
+    p { color: var(--muted); line-height: 1.6; }
+
+    .sub { color: var(--muted); font-size: 13px; }
+    .stack { display: grid; gap: 14px; }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 1px 0 rgba(255,255,255,.8);
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat {
+      background: #f7fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius);
+      padding: 12px;
+      min-height: 74px;
+    }
+
+    .stat b {
+      display: block;
+      font-size: 24px;
+      line-height: 1.1;
+    }
+
+    .meter {
+      height: 10px;
+      background: #dde6ee;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .meter > span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--green);
+      border-radius: inherit;
+      transition: width 220ms ease;
+    }
+
+    .tabs, .segmented {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tabs button, .segmented button {
+      min-height: 34px;
+      padding: 0 10px;
+      font-size: 13px;
+    }
+
+    .tabs button.active, .segmented button.active {
+      background: var(--blue-soft);
+      border-color: #8db0df;
+      color: #153f78;
+    }
+
+    .hero {
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .lesson-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      min-height: 420px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .word-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .word {
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: .95;
+      letter-spacing: 0;
+      margin: 0;
+    }
+
+    .phonetic {
+      color: var(--muted);
+      margin-top: 8px;
+      font-size: 18px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .meaning {
+      font-size: 22px;
+      color: var(--ink);
+      margin-bottom: 0;
+    }
+
+    .example {
+      border-left: 4px solid #8bb7d9;
+      padding-left: 14px;
+      color: #314157;
+      font-size: 17px;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .practice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .mini-panel {
+      background: #f7fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius);
+      padding: 14px;
+      min-height: 132px;
+    }
+
+    .mini-panel textarea, .mini-panel input, .settings input, .settings select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 10px 11px;
+      min-height: 40px;
+      background: white;
+      color: var(--ink);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 88px;
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 8px;
+    }
+
+    .quiz-options button {
+      justify-content: flex-start;
+      text-align: left;
+      min-height: 46px;
+    }
+
+    .quiz-options button.correct {
+      background: var(--green-soft);
+      border-color: #79c4a7;
+    }
+
+    .quiz-options button.wrong {
+      background: #fdecec;
+      border-color: #efa0a0;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #cfd8e3;
+      border-radius: 999px;
+      padding: 6px 9px;
+      background: white;
+      font-size: 13px;
+    }
+
+    .daily-list {
+      display: grid;
+      gap: 8px;
+      max-height: 300px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .daily-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius);
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .daily-item.active {
+      border-color: #7da6d8;
+      background: var(--blue-soft);
+    }
+
+    .daily-item.done .mini-word {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .mini-word {
+      font-weight: 750;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(120px);
+      background: #18212f;
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 11px 14px;
+      box-shadow: var(--shadow);
+      transition: transform 220ms ease;
+      z-index: 10;
+      max-width: min(520px, calc(100vw - 28px));
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .hidden { display: none !important; }
+    .muted { color: var(--muted); }
+    .success { color: var(--green); font-weight: 700; }
+    .danger { color: var(--red); font-weight: 700; }
+
+    @media (max-width: 1080px) {
+      .app {
+        grid-template-columns: 250px minmax(0, 1fr);
+      }
+      .right {
+        grid-column: 1 / -1;
+        border-left: 0;
+        border-top: 1px solid var(--line);
+      }
+      .practice-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app { display: block; }
+      aside, main { padding: 16px; }
+      aside, .right { border: 0; }
+      .lesson-card { min-height: auto; padding: 18px; }
+      .word-top { display: grid; }
+      .word { font-size: 52px; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <div class="mark">BE</div>
+        <div>
+          <h1>Basic English Daily</h1>
+          <div class="sub">C.K. Ogden 核心词训练</div>
+        </div>
+      </div>
+
+      <section class="card stack">
+        <div>
+          <h2>今日进度</h2>
+          <p id="todayLine">准备开始今天的 8 个核心词。</p>
+        </div>
+        <div class="meter" aria-label="今日进度"><span id="progressBar"></span></div>
+        <div class="stat-grid">
+          <div class="stat"><span class="sub">连续天数</span><b id="streak">0</b></div>
+          <div class="stat"><span class="sub">经验值</span><b id="xp">0</b></div>
+          <div class="stat"><span class="sub">掌握词</span><b id="mastered">0</b></div>
+          <div class="stat"><span class="sub">测验正确</span><b id="accuracy">0%</b></div>
+        </div>
+      </section>
+
+      <section class="card stack" style="margin-top:14px">
+        <div class="control-row">
+          <h2 style="margin:0">今日词卡</h2>
+          <button class="icon" id="shuffleBtn" title="换一组">⟳</button>
+        </div>
+        <div class="daily-list" id="dailyList"></div>
+      </section>
+    </aside>
+
+    <main class="hero">
+      <div class="tabs" role="tablist">
+        <button class="active" data-view="learn">学习</button>
+        <button data-view="apply">应用</button>
+        <button data-view="game">小游戏</button>
+      </div>
+
+      <section class="lesson-card" id="learnView">
+        <div class="word-top">
+          <div>
+            <h2 class="word" id="wordText">make</h2>
+            <div class="phonetic" id="phoneticText">/meɪk/</div>
+          </div>
+          <span class="tag" id="groupTag">operations</span>
+        </div>
+
+        <p class="meaning" id="meaningText">做；制造；使成为</p>
+        <p class="example" id="exampleText">We can make a clear plan with simple words.</p>
+
+        <div class="control-row">
+          <button class="primary" id="speakBtn">▶ 发音</button>
+          <button id="slowSpeakBtn">◷ 慢速</button>
+          <button id="listenBtn">● 跟读</button>
+          <button id="knownBtn">✓ 记住了</button>
+          <button id="nextBtn">→ 下一个</button>
+        </div>
+
+        <div class="practice-grid">
+          <div class="mini-panel">
+            <h3>跟读反馈</h3>
+            <p id="speechResult">点“跟读”后朗读当前单词或例句。</p>
+          </div>
+          <div class="mini-panel">
+            <h3>快速造句</h3>
+            <textarea id="sentenceInput" placeholder="用这个词写一句话"></textarea>
+            <div class="control-row" style="margin-top:8px">
+              <button id="saveSentenceBtn">保存</button>
+            </div>
+          </div>
+          <div class="mini-panel">
+            <h3>记忆提示</h3>
+            <p id="tipText">Basic English 重视用少量词组合表达复杂意思。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="lesson-card hidden" id="applyView">
+        <div>
+          <h2>应用训练</h2>
+          <p>把复杂句子改写成 Basic English 风格：短句、常用词、清楚动作。</p>
+        </div>
+        <div class="mini-panel">
+          <h3>今日改写题</h3>
+          <p id="rewritePrompt"></p>
+          <textarea id="rewriteInput" placeholder="写出你的 Basic English 版本"></textarea>
+          <div class="control-row" style="margin-top:10px">
+            <button class="blue" id="checkRewriteBtn">检查</button>
+            <button id="sampleRewriteBtn">看示例</button>
+            <button id="speakRewriteBtn">朗读我的句子</button>
+          </div>
+          <p id="rewriteFeedback"></p>
+        </div>
+        <div>
+          <h3>已保存句子</h3>
+          <div class="pill-row" id="sentenceBank"></div>
+        </div>
+      </section>
+
+      <section class="lesson-card hidden" id="gameView">
+        <div>
+          <h2>60 秒配对</h2>
+          <p>选出英文对应的中文意思。连续答对会获得额外经验值。</p>
+        </div>
+        <div class="mini-panel">
+          <div class="control-row" style="justify-content:space-between">
+            <h3 style="margin:0">题目</h3>
+            <span class="tag" id="comboTag">Combo 0</span>
+          </div>
+          <p class="meaning" id="quizWord">make</p>
+          <div class="quiz-options" id="quizOptions"></div>
+          <p id="quizFeedback"></p>
+        </div>
+      </section>
+    </main>
+
+    <aside class="right">
+      <section class="card stack">
+        <h2>每日计划</h2>
+        <div class="settings stack">
+          <label>
+            <span class="sub">每天学习词数</span>
+            <select id="dailyCount">
+              <option value="5">5 个：轻量</option>
+              <option value="8">8 个：推荐</option>
+              <option value="12">12 个：强化</option>
+            </select>
+          </label>
+          <label>
+            <span class="sub">提醒时间</span>
+            <input id="reminderTime" type="time" value="20:30" />
+          </label>
+          <div class="control-row">
+            <button class="primary" id="enableReminderBtn">开启提醒</button>
+            <button id="testReminderBtn">测试提醒</button>
+          </div>
+          <p id="reminderStatus">提醒会在本页面打开时触发；浏览器允许通知后效果最好。</p>
+        </div>
+      </section>
+
+      <section class="card stack" style="margin-top:14px">
+        <h2>考核</h2>
+        <div class="segmented" id="quizMode">
+          <button class="active" data-mode="meaning">英 → 中</button>
+          <button data-mode="spelling">中 → 拼写</button>
+          <button data-mode="listening">听音辨词</button>
+        </div>
+        <div id="quizPanel"></div>
+      </section>
+
+      <section class="card stack" style="margin-top:14px">
+        <h2>Basic English 小规则</h2>
+        <div class="pill-row">
+          <span class="pill">少量核心词</span>
+          <span class="pill">多用组合</span>
+          <span class="pill">短句优先</span>
+          <span class="pill">动作清楚</span>
+          <span class="pill">每天复现</span>
+        </div>
+        <p>今天的目标不是“背完”，而是能听、能认、能说、能用一句。</p>
+      </section>
+    </aside>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const WORDS = [
+      { w: "make", p: "/meɪk/", m: "做；制造；使成为", g: "operations", e: "We can make a clear plan with simple words.", tip: "make 可表达“制造、造成、安排”，是 Basic English 的高频动作词。" },
+      { w: "get", p: "/ɡet/", m: "得到；变得；到达", g: "operations", e: "I get new words from one short story.", tip: "get + 形容词常表示变化，如 get ready, get clear。" },
+      { w: "give", p: "/ɡɪv/", m: "给；提供", g: "operations", e: "Give one example before you learn the next word.", tip: "give 能替代很多复杂动词：give help, give an answer。" },
+      { w: "take", p: "/teɪk/", m: "拿；带；花费", g: "operations", e: "Take five minutes to say the word out loud.", tip: "take 与名词组合很强：take a look, take care。" },
+      { w: "come", p: "/kʌm/", m: "来；出现", g: "operations", e: "Good ideas come after a little practice.", tip: "come 可表达移动，也可表达事情发生。" },
+      { w: "go", p: "/ɡoʊ/", m: "去；进行", g: "operations", e: "Go over yesterday's words before new ones.", tip: "go over 表示复习；go on 表示继续。" },
+      { w: "see", p: "/siː/", m: "看见；理解", g: "operations", e: "I see the point of this simple sentence.", tip: "see 不只是视觉，也常表示“明白”。" },
+      { w: "seem", p: "/siːm/", m: "似乎；看起来", g: "operations", e: "This word may seem small, but it is useful.", tip: "seem 帮你表达不确定判断。" },
+      { w: "say", p: "/seɪ/", m: "说；表达", g: "operations", e: "Say the sentence three times.", tip: "say 强调说出的内容；tell 强调告诉某人。" },
+      { w: "put", p: "/pʊt/", m: "放；安置", g: "operations", e: "Put the new word in your own sentence.", tip: "put + 介词能表达很多动作：put on, put off, put down。" },
+      { w: "send", p: "/send/", m: "发送；派遣", g: "operations", e: "Send a short message in Basic English.", tip: "send 可用于信息、物品、人。" },
+      { w: "keep", p: "/kiːp/", m: "保持；保存", g: "operations", e: "Keep your sentences short and clear.", tip: "keep + 形容词表示保持状态。" },
+      { w: "let", p: "/let/", m: "让；允许", g: "operations", e: "Let the word appear in a real sentence.", tip: "let 是表达允许和放手的核心词。" },
+      { w: "begin", p: "/bɪˈɡɪn/", m: "开始", g: "operations", e: "Begin with one word, not ten.", tip: "begin 比 start 更常见于正式表达，但两者都好用。" },
+      { w: "end", p: "/end/", m: "结束；末端", g: "operations", e: "End the lesson with one spoken sentence.", tip: "end 可作名词也可作动词。" },
+      { w: "write", p: "/raɪt/", m: "写", g: "operations", e: "Write a simple line with today's word.", tip: "写作训练是把被动词汇变主动词汇的关键。" },
+      { w: "read", p: "/riːd/", m: "读；阅读", g: "operations", e: "Read the example before you speak.", tip: "read 的过去式拼写相同，发音变为 /red/。" },
+      { w: "hear", p: "/hɪr/", m: "听见", g: "operations", e: "Hear the sound, then repeat it.", tip: "hear 强调听见结果；listen 强调主动听。" },
+      { w: "work", p: "/wɜːrk/", m: "工作；运转；作品", g: "general things", e: "Small daily work gives strong results.", tip: "work 可表示劳动、任务、机器运转、作品。" },
+      { w: "thing", p: "/θɪŋ/", m: "东西；事情", g: "general things", e: "Name one thing in the room in English.", tip: "thing 是 Basic English 的万能名词，但造句时要尽量具体。" },
+      { w: "person", p: "/ˈpɜːrsn/", m: "人", g: "general things", e: "A person learns better with daily use.", tip: "person 指单个人；people 指人们。" },
+      { w: "place", p: "/pleɪs/", m: "地方；位置", g: "general things", e: "Put the word in a place you can see.", tip: "place 可作名词，也可作动词“放置”。" },
+      { w: "part", p: "/pɑːrt/", m: "部分；角色", g: "general things", e: "This word is part of your daily English.", tip: "part of 是非常高频的组合。" },
+      { w: "number", p: "/ˈnʌmbər/", m: "数字；数量", g: "general things", e: "The number of new words today is small.", tip: "number of 后面接复数名词。" },
+      { w: "water", p: "/ˈwɔːtər/", m: "水", g: "things", e: "Water is necessary for all living things.", tip: "water 作物质名词时通常不可数。" },
+      { w: "food", p: "/fuːd/", m: "食物", g: "things", e: "Good food gives the body power.", tip: "Basic English 用常见名词表达基础生活。" },
+      { w: "house", p: "/haʊs/", m: "房子", g: "things", e: "The house is near a quiet road.", tip: "house 指建筑；home 偏情感上的家。" },
+      { w: "room", p: "/ruːm/", m: "房间；空间", g: "things", e: "There is room for one more word.", tip: "room 也可表示“空间”。" },
+      { w: "book", p: "/bʊk/", m: "书；预订", g: "things", e: "Open a book and find a simple sentence.", tip: "book 作动词时表示预订。" },
+      { w: "hand", p: "/hænd/", m: "手；交给", g: "things", e: "Write the word by hand once.", tip: "by hand 表示手工、亲手。" },
+      { w: "eye", p: "/aɪ/", m: "眼睛", g: "things", e: "Keep your eye on the example sentence.", tip: "keep an eye on 表示留意。" },
+      { w: "head", p: "/hed/", m: "头；首脑；前往", g: "things", e: "Put the word in your head with a story.", tip: "head 也可作动词，表示朝某方向去。" },
+      { w: "good", p: "/ɡʊd/", m: "好的", g: "qualities", e: "A good sentence is short and clear.", tip: "good 是基础评价词，搭配范围很广。" },
+      { w: "bad", p: "/bæd/", m: "坏的；差的", g: "qualities", e: "A bad habit can change with a small plan.", tip: "bad 可用于质量、感受、行为。" },
+      { w: "high", p: "/haɪ/", m: "高的", g: "qualities", e: "A high score comes from steady practice.", tip: "high 多指高度、水平、数量高。" },
+      { w: "low", p: "/loʊ/", m: "低的", g: "qualities", e: "Start with a low number of words.", tip: "low 与声音、价格、位置、水平都能搭配。" },
+      { w: "long", p: "/lɔːŋ/", m: "长的；久的", g: "qualities", e: "Do not make the sentence too long.", tip: "long 可指长度，也可指时间。" },
+      { w: "short", p: "/ʃɔːrt/", m: "短的；不足的", g: "qualities", e: "Short practice is better than no practice.", tip: "short of 表示缺少。" },
+      { w: "small", p: "/smɔːl/", m: "小的", g: "qualities", e: "A small step every day is powerful.", tip: "small 强调尺寸或程度小。" },
+      { w: "great", p: "/ɡreɪt/", m: "大的；很好的", g: "qualities", e: "Great progress can come from simple work.", tip: "great 可表示规模大，也可表示优秀。" },
+      { w: "clear", p: "/klɪr/", m: "清楚的；清除", g: "qualities", e: "Make your meaning clear.", tip: "clear 同时是形容词和动词。" },
+      { w: "simple", p: "/ˈsɪmpl/", m: "简单的", g: "qualities", e: "Simple words can carry deep ideas.", tip: "Basic English 的精神就是 simple but useful。" },
+      { w: "quick", p: "/kwɪk/", m: "快的", g: "qualities", e: "Take a quick test after the lesson.", tip: "quick 是形容词；quickly 是副词。" },
+      { w: "slow", p: "/sloʊ/", m: "慢的", g: "qualities", e: "Slow speech helps your ear.", tip: "slow practice often leads to faster progress。" },
+      { w: "early", p: "/ˈɜːrli/", m: "早的；早地", g: "qualities", e: "Learn early if your mind is fresh.", tip: "early 可作形容词和副词。" },
+      { w: "late", p: "/leɪt/", m: "晚的；迟到", g: "qualities", e: "A late lesson is still better than none.", tip: "late 也可表达已故的，但初学先掌握“晚”。" },
+      { w: "before", p: "/bɪˈfɔːr/", m: "在……之前", g: "relations", e: "Speak before you check the answer.", tip: "before 可作介词、连词、副词。" },
+      { w: "after", p: "/ˈæftər/", m: "在……之后", g: "relations", e: "Review after the quiz.", tip: "after 和 before 是组织时间的基础词。" },
+      { w: "with", p: "/wɪð/", m: "和；带有；用", g: "relations", e: "Learn with your voice, not only your eyes.", tip: "with 能表示一起、工具、附带状态。" },
+      { w: "without", p: "/wɪðˈaʊt/", m: "没有；不带", g: "relations", e: "Do not move on without one example.", tip: "without 后接名词或动名词。" },
+      { w: "over", p: "/ˈoʊvər/", m: "在上方；超过；结束", g: "relations", e: "Go over the word once more.", tip: "over 的空间和抽象用法都很多。" },
+      { w: "under", p: "/ˈʌndər/", m: "在下面；低于", g: "relations", e: "Write the meaning under the word.", tip: "under 可指位置、数量、压力。" },
+      { w: "because", p: "/bɪˈkɔːz/", m: "因为", g: "operators", e: "I learn daily because small work adds up.", tip: "because 帮你说明原因，是表达逻辑的核心。" },
+      { w: "if", p: "/ɪf/", m: "如果；是否", g: "operators", e: "If you forget it, hear it again.", tip: "if 让你表达条件和选择。" },
+      { w: "but", p: "/bʌt/", m: "但是", g: "operators", e: "The word is small, but it is useful.", tip: "but 连接对比，句子立刻更有层次。" },
+      { w: "and", p: "/ænd/", m: "和；并且", g: "operators", e: "Hear, say, and use the word.", tip: "and 连接同类信息，别把句子串得过长。" },
+      { w: "or", p: "/ɔːr/", m: "或者；否则", g: "operators", e: "Use the word in speech or writing.", tip: "or 表示选择，也可表示否则。" },
+      { w: "very", p: "/ˈveri/", m: "非常", g: "operators", e: "A very short sentence can be enough.", tip: "very 有用，但写作中过多会变弱。" },
+      { w: "not", p: "/nɑːt/", m: "不；没有", g: "operators", e: "Do not learn only with your eyes.", tip: "not 是否定核心词，和 be/do/have 搭配。" },
+      { w: "again", p: "/əˈɡen/", m: "再一次", g: "operators", e: "Say the word again after five seconds.", tip: "again 是复现训练的关键词。" }
+    ];
+
+    const rewrites = [
+      {
+        prompt: "The implementation of this plan will significantly improve our productivity.",
+        sample: "This plan will make our work much better."
+      },
+      {
+        prompt: "I was unable to comprehend the explanation because it was unnecessarily complicated.",
+        sample: "I could not get the idea because it was not simple."
+      },
+      {
+        prompt: "Please provide assistance before the meeting begins.",
+        sample: "Please give help before the meeting starts."
+      },
+      {
+        prompt: "The device is currently not functioning correctly.",
+        sample: "The thing is not working well now."
+      }
+    ];
+
+    const $ = (id) => document.getElementById(id);
+    const todayKey = new Date().toISOString().slice(0, 10);
+    const state = loadState();
+    let currentIndex = 0;
+    let currentView = "learn";
+    let quizMode = "meaning";
+    let combo = 0;
+    let timerId = null;
+
+    function loadState() {
+      const defaults = {
+        xp: 0,
+        mastered: {},
+        quizRight: 0,
+        quizTotal: 0,
+        sentences: [],
+        dailyCount: 8,
+        reminderTime: "20:30",
+        lastStudyDate: "",
+        streak: 0,
+        daySeed: "",
+        dayWords: [],
+        completed: {}
+      };
+      try {
+        return { ...defaults, ...JSON.parse(localStorage.getItem("basicEnglishDaily") || "{}") };
+      } catch {
+        return defaults;
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem("basicEnglishDaily", JSON.stringify(state));
+    }
+
+    function seededPick(count, seedShift = 0) {
+      const dayNumber = Math.floor(Date.parse(todayKey) / 86400000) + seedShift;
+      return [...WORDS]
+        .map((word, i) => ({ word, score: Math.sin((i + 1) * 999 + dayNumber * 37) }))
+        .sort((a, b) => a.score - b.score)
+        .slice(0, count)
+        .map(x => x.word.w);
+    }
+
+    function ensureToday() {
+      if (state.daySeed !== todayKey || !state.dayWords.length) {
+        state.daySeed = todayKey;
+        state.dayWords = seededPick(Number(state.dailyCount || 8));
+        state.completed = {};
+      }
+      if (state.lastStudyDate !== todayKey) {
+        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+        state.streak = state.lastStudyDate === yesterday ? Number(state.streak || 0) + 1 : 1;
+        state.lastStudyDate = todayKey;
+      }
+      saveState();
+    }
+
+    function getDailyWords() {
+      return state.dayWords.map(w => WORDS.find(x => x.w === w)).filter(Boolean);
+    }
+
+    function currentWord() {
+      return getDailyWords()[currentIndex] || getDailyWords()[0] || WORDS[0];
+    }
+
+    function renderAll() {
+      ensureToday();
+      renderStats();
+      renderDailyList();
+      renderWord();
+      renderSentences();
+      renderRewrite();
+      renderQuizPanel();
+      scheduleReminderCheck();
+    }
+
+    function renderStats() {
+      const daily = getDailyWords();
+      const done = daily.filter(x => state.completed[x.w]).length;
+      const pct = daily.length ? Math.round(done / daily.length * 100) : 0;
+      $("progressBar").style.width = pct + "%";
+      $("todayLine").textContent = `今天 ${daily.length} 个词，已完成 ${done} 个。`;
+      $("streak").textContent = state.streak || 0;
+      $("xp").textContent = state.xp || 0;
+      $("mastered").textContent = Object.keys(state.mastered || {}).length;
+      $("accuracy").textContent = state.quizTotal ? Math.round(state.quizRight / state.quizTotal * 100) + "%" : "0%";
+      $("dailyCount").value = String(state.dailyCount || 8);
+      $("reminderTime").value = state.reminderTime || "20:30";
+    }
+
+    function renderDailyList() {
+      const list = $("dailyList");
+      list.innerHTML = "";
+      getDailyWords().forEach((word, idx) => {
+        const item = document.createElement("div");
+        item.className = "daily-item" + (idx === currentIndex ? " active" : "") + (state.completed[word.w] ? " done" : "");
+        item.innerHTML = `<span><span class="mini-word">${word.w}</span><br><span class="sub">${word.m}</span></span><span>${state.completed[word.w] ? "✓" : "○"}</span>`;
+        item.addEventListener("click", () => {
+          currentIndex = idx;
+          renderAll();
+        });
+        list.appendChild(item);
+      });
+    }
+
+    function renderWord() {
+      const word = currentWord();
+      $("wordText").textContent = word.w;
+      $("phoneticText").textContent = word.p;
+      $("meaningText").textContent = word.m;
+      $("exampleText").textContent = word.e;
+      $("groupTag").textContent = word.g;
+      $("tipText").textContent = word.tip;
+      $("sentenceInput").value = "";
+      $("speechResult").textContent = "点“跟读”后朗读当前单词或例句。";
+    }
+
+    function speak(text, rate = 0.86) {
+      if (!("speechSynthesis" in window)) {
+        toast("这个浏览器没有发音接口。");
+        return;
+      }
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-US";
+      u.rate = rate;
+      u.pitch = 1;
+      speechSynthesis.speak(u);
+    }
+
+    function startRecognition() {
+      const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!Recognition) {
+        $("speechResult").innerHTML = "<span class='danger'>当前浏览器不支持语音识别。</span> 可以继续使用发音和手动造句。";
+        return;
+      }
+      const word = currentWord();
+      const recog = new Recognition();
+      recog.lang = "en-US";
+      recog.interimResults = false;
+      recog.maxAlternatives = 3;
+      $("speechResult").textContent = "正在听，请说：" + word.w;
+      recog.onresult = (event) => {
+        const heard = Array.from(event.results[0]).map(r => r.transcript.toLowerCase());
+        const ok = heard.some(t => t.includes(word.w.toLowerCase()));
+        $("speechResult").innerHTML = ok
+          ? `<span class="success">听起来很像：${heard[0]}</span>`
+          : `<span class="danger">我听到：${heard[0]}</span><br><span class="sub">再听一遍发音，然后慢速跟读。</span>`;
+        if (ok) award(4);
+      };
+      recog.onerror = () => $("speechResult").textContent = "没有听清，可以再试一次。";
+      recog.start();
+    }
+
+    function markKnown() {
+      const word = currentWord();
+      state.completed[word.w] = true;
+      state.mastered[word.w] = (state.mastered[word.w] || 0) + 1;
+      award(6);
+      saveState();
+      toast(`已记住 ${word.w}，+6 XP`);
+      nextWord();
+    }
+
+    function nextWord() {
+      currentIndex = (currentIndex + 1) % getDailyWords().length;
+      renderAll();
+    }
+
+    function award(points) {
+      state.xp = Number(state.xp || 0) + points;
+      saveState();
+      renderStats();
+    }
+
+    function saveSentence() {
+      const text = $("sentenceInput").value.trim();
+      if (!text) {
+        toast("先写一句，再保存。");
+        return;
+      }
+      const word = currentWord();
+      const hasWord = text.toLowerCase().includes(word.w.toLowerCase());
+      state.sentences.unshift({ word: word.w, text, date: todayKey });
+      state.sentences = state.sentences.slice(0, 30);
+      award(hasWord ? 8 : 3);
+      saveState();
+      toast(hasWord ? "句子已保存，主动词汇 +1。" : "已保存；下次尽量把当前词放进去。");
+      renderSentences();
+      $("sentenceInput").value = "";
+    }
+
+    function renderSentences() {
+      const bank = $("sentenceBank");
+      bank.innerHTML = "";
+      if (!state.sentences.length) {
+        bank.innerHTML = '<span class="sub">还没有保存句子。</span>';
+        return;
+      }
+      state.sentences.slice(0, 12).forEach(item => {
+        const pill = document.createElement("button");
+        pill.className = "pill";
+        pill.textContent = `${item.word}: ${item.text}`;
+        pill.addEventListener("click", () => speak(item.text, .9));
+        bank.appendChild(pill);
+      });
+    }
+
+    function renderRewrite() {
+      const item = rewrites[Math.floor(Date.parse(todayKey) / 86400000) % rewrites.length];
+      $("rewritePrompt").textContent = item.prompt;
+      $("rewriteFeedback").textContent = "";
+    }
+
+    function checkRewrite(showSample = false) {
+      const item = rewrites[Math.floor(Date.parse(todayKey) / 86400000) % rewrites.length];
+      const text = $("rewriteInput").value.trim();
+      if (showSample) {
+        $("rewriteFeedback").innerHTML = `<span class="success">示例：</span> ${item.sample}`;
+        speak(item.sample, .88);
+        return;
+      }
+      if (!text) {
+        $("rewriteFeedback").textContent = "先写一个版本。";
+        return;
+      }
+      const words = text.split(/\s+/).filter(Boolean);
+      const longWords = words.filter(w => w.replace(/[^a-z]/gi, "").length > 9).length;
+      const score = Math.max(30, 100 - Math.max(0, words.length - 12) * 4 - longWords * 9);
+      $("rewriteFeedback").innerHTML = score >= 78
+        ? `<span class="success">${score} 分：</span> 简短清楚，很接近 Basic English 风格。`
+        : `<span class="danger">${score} 分：</span> 试着缩短句子，少用长词，多用 make/get/give/take 这类核心词。`;
+      award(score >= 78 ? 10 : 3);
+    }
+
+    function renderQuizPanel() {
+      const panel = $("quizPanel");
+      panel.innerHTML = "";
+      if (quizMode === "meaning") {
+        const btn = document.createElement("button");
+        btn.className = "blue";
+        btn.textContent = "开始英 → 中测验";
+        btn.addEventListener("click", newMeaningQuiz);
+        panel.appendChild(btn);
+      } else if (quizMode === "spelling") {
+        const word = randomDailyWord();
+        panel.innerHTML = `<p>拼写这个词：<b>${word.m}</b></p><input id="spellInput" placeholder="输入英文拼写"><div class="control-row" style="margin-top:10px"><button class="blue" id="spellCheck">检查</button><button id="spellHear">听发音</button></div><p id="spellFeedback"></p>`;
+        $("spellCheck").addEventListener("click", () => {
+          const ok = $("spellInput").value.trim().toLowerCase() === word.w.toLowerCase();
+          recordQuiz(ok);
+          $("spellFeedback").innerHTML = ok ? `<span class="success">正确，+8 XP。</span>` : `<span class="danger">答案是 ${word.w}。</span>`;
+          if (ok) award(8);
+        });
+        $("spellHear").addEventListener("click", () => speak(word.w, .84));
+      } else {
+        const word = randomDailyWord();
+        panel.innerHTML = `<p>先听发音，再选或写出单词。</p><div class="control-row"><button class="primary" id="listenQuiz">▶ 播放</button><input id="listenInput" placeholder="输入你听到的词"></div><p id="listenFeedback"></p>`;
+        $("listenQuiz").addEventListener("click", () => speak(word.w, .8));
+        $("listenInput").addEventListener("change", () => {
+          const ok = $("listenInput").value.trim().toLowerCase() === word.w.toLowerCase();
+          recordQuiz(ok);
+          $("listenFeedback").innerHTML = ok ? `<span class="success">听对了，+8 XP。</span>` : `<span class="danger">答案是 ${word.w}。</span>`;
+          if (ok) award(8);
+        });
+      }
+      newMeaningQuiz();
+    }
+
+    function randomDailyWord() {
+      const daily = getDailyWords();
+      return daily[Math.floor(Math.random() * daily.length)] || WORDS[0];
+    }
+
+    function newMeaningQuiz() {
+      const word = randomDailyWord();
+      $("quizWord").textContent = word.w;
+      $("quizFeedback").textContent = "";
+      const choices = [word, ...WORDS.filter(x => x.w !== word.w).sort(() => Math.random() - .5).slice(0, 3)]
+        .sort(() => Math.random() - .5);
+      const box = $("quizOptions");
+      box.innerHTML = "";
+      choices.forEach(choice => {
+        const btn = document.createElement("button");
+        btn.textContent = choice.m;
+        btn.addEventListener("click", () => {
+          const ok = choice.w === word.w;
+          btn.classList.add(ok ? "correct" : "wrong");
+          recordQuiz(ok);
+          if (ok) {
+            combo += 1;
+            const bonus = combo >= 3 ? 12 : 7;
+            award(bonus);
+            $("quizFeedback").innerHTML = `<span class="success">正确，+${bonus} XP。</span>`;
+            setTimeout(newMeaningQuiz, 650);
+          } else {
+            combo = 0;
+            $("quizFeedback").innerHTML = `<span class="danger">再看一眼：${word.w} = ${word.m}</span>`;
+          }
+          $("comboTag").textContent = "Combo " + combo;
+        });
+        box.appendChild(btn);
+      });
+    }
+
+    function recordQuiz(ok) {
+      state.quizTotal = Number(state.quizTotal || 0) + 1;
+      if (ok) state.quizRight = Number(state.quizRight || 0) + 1;
+      saveState();
+      renderStats();
+    }
+
+    function toast(message) {
+      const el = $("toast");
+      el.textContent = message;
+      el.classList.add("show");
+      clearTimeout(el.timer);
+      el.timer = setTimeout(() => el.classList.remove("show"), 2200);
+    }
+
+    async function enableReminder(test = false) {
+      state.reminderTime = $("reminderTime").value || "20:30";
+      saveState();
+      if ("Notification" in window && Notification.permission !== "granted") {
+        await Notification.requestPermission();
+      }
+      if (test) {
+        notify("Basic English Daily", "现在练 5 分钟：听、说、用一个词。");
+      } else {
+        toast("提醒已设置。本页面打开时，会按设定时间提醒。");
+      }
+      scheduleReminderCheck();
+    }
+
+    function notify(title, body) {
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification(title, { body });
+      } else {
+        toast(body);
+      }
+    }
+
+    function scheduleReminderCheck() {
+      clearInterval(timerId);
+      timerId = setInterval(() => {
+        const now = new Date();
+        const current = now.toTimeString().slice(0, 5);
+        if (current === state.reminderTime && state.lastNotify !== todayKey + current) {
+          state.lastNotify = todayKey + current;
+          saveState();
+          notify("Basic English Daily", "今天的核心词还在等你：听一个、说一个、用一个。");
+        }
+      }, 30000);
+      $("reminderStatus").textContent = `已设定 ${state.reminderTime || "20:30"} 提醒。页面打开时会检查提醒。`;
+    }
+
+    $("speakBtn").addEventListener("click", () => speak(currentWord().w, .86));
+    $("slowSpeakBtn").addEventListener("click", () => speak(currentWord().w + ". " + currentWord().e, .68));
+    $("listenBtn").addEventListener("click", startRecognition);
+    $("knownBtn").addEventListener("click", markKnown);
+    $("nextBtn").addEventListener("click", nextWord);
+    $("saveSentenceBtn").addEventListener("click", saveSentence);
+    $("checkRewriteBtn").addEventListener("click", () => checkRewrite(false));
+    $("sampleRewriteBtn").addEventListener("click", () => checkRewrite(true));
+    $("speakRewriteBtn").addEventListener("click", () => speak($("rewriteInput").value || $("rewritePrompt").textContent, .86));
+    $("enableReminderBtn").addEventListener("click", () => enableReminder(false));
+    $("testReminderBtn").addEventListener("click", () => enableReminder(true));
+    $("shuffleBtn").addEventListener("click", () => {
+      state.dayWords = seededPick(Number(state.dailyCount || 8), Math.floor(Math.random() * 1000));
+      state.completed = {};
+      currentIndex = 0;
+      saveState();
+      renderAll();
+      toast("已换一组今日词。");
+    });
+    $("dailyCount").addEventListener("change", () => {
+      state.dailyCount = Number($("dailyCount").value);
+      state.dayWords = seededPick(state.dailyCount);
+      state.completed = {};
+      currentIndex = 0;
+      saveState();
+      renderAll();
+    });
+    $("reminderTime").addEventListener("change", () => {
+      state.reminderTime = $("reminderTime").value;
+      saveState();
+      scheduleReminderCheck();
+    });
+
+    document.querySelectorAll(".tabs button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        currentView = btn.dataset.view;
+        document.querySelectorAll(".tabs button").forEach(x => x.classList.toggle("active", x === btn));
+        ["learn", "apply", "game"].forEach(view => $(view + "View").classList.toggle("hidden", view !== currentView));
+      });
+    });
+
+    document.querySelectorAll("#quizMode button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        quizMode = btn.dataset.mode;
+        document.querySelectorAll("#quizMode button").forEach(x => x.classList.toggle("active", x === btn));
+        renderQuizPanel();
+      });
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.target.matches("input, textarea")) return;
+      if (event.key === " ") {
+        event.preventDefault();
+        speak(currentWord().w, .86);
+      }
+      if (event.key === "ArrowRight") nextWord();
+      if (event.key.toLowerCase() === "k") markKnown();
+    });
+
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>
